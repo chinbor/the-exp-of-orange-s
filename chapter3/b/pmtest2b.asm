@@ -189,7 +189,7 @@ TestRead:
 	mov ecx,8 ;只循环8次
 .loop:
 	mov al,[es:esi]
-	call DispAL  ;调用这个函数在显示器显示字符
+	call DispAL2  ;调用这个函数在显示器显示字符
 	inc esi
 	loop .loop
 	call DispReturn
