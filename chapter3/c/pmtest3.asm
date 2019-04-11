@@ -5,11 +5,11 @@
 
 DA_32 	EQU 4000H
 DA_C    EQU 98H
-DA_LDT EQU 82H
+DA_LDT EQU 82H ;局部描述符表属性1000 0010
 DA_DRW EQU 92H
 DA_DRWA EQU 93H
 ;DA_DPL1 EQU 20H
-SA_TIL EQU 4
+SA_TIL EQU 4  ;置ti为1，也就是采用ldt表
 
 %macro Descriptor 3    
   
@@ -46,7 +46,7 @@ SelectorCode32		equ	LABEL_DESC_CODE32	- LABEL_GDT
 SelectorCode16		equ	LABEL_DESC_CODE16	- LABEL_GDT
 SelectorData		equ	LABEL_DESC_DATA		- LABEL_GDT
 SelectorStack		equ	LABEL_DESC_STACK	- LABEL_GDT
-SelectorLDT		equ	LABEL_DESC_LDT		- LABEL_GDT
+SelectorLDT			equ	LABEL_DESC_LDT		- LABEL_GDT ;这里是局部描述表的选择子
 SelectorVideo		equ	LABEL_DESC_VIDEO	- LABEL_GDT
 ; END of [SECTION .gdt]
 
@@ -56,7 +56,7 @@ ALIGN	32
 LABEL_DATA:
 	SPValueInRealMode	dw	0
 	; 字符串
-	PMMessage:		db	"*-* In Protect Mode now. ^-^", 0	; 进入保护模式后显示此字符串
+	PMMessage:		db	"!*-*! In Protect Mode now. ^-^", 0	; 进入保护模式后显示此字符串
 	OffsetPMMessage		equ	PMMessage - $$
 	PMMessage2: 	db 	"the first task"
 	PMMessage2Len 		equ $-PMMessage2
@@ -243,14 +243,15 @@ LABEL_SEG_CODE32:
 	;call	DispReturn
 
 	; Load LDT
-	mov	ax, SelectorLDT
-	lldt	ax
+	mov	ax, SelectorLDT;这个选择子是在gdt中的偏移
+	lldt	ax ;注意这里是为了将ldt表的描述符加载进ldtr寄存器
 
-	call SelectorLDTCodeA:0 ;跳入局部任务a
-	call SelectorLDTCodeB:0 ;跳入局部任务b
-	jmp SelectorCode16:0
+	call SelectorLDTCodeA:0 ;跳入局部任务a,这个选择子selectorldtcodea的ti为1，说明他这里寻址是在ldt表中寻址，也就是这个选择子是在ldt表中的偏移
+	call SelectorLDTCodeB:0 ;跳入局部任务b,同上
+	jmp SelectorCode16:0  ;这里做到了更新cs寄存器的段描述符高速缓冲寄存器的作用,因为selectorcode16会存进cs寄存器
 
 ; ------------------------------------------------------------------------
+;换行
 DispReturn:
 	push	eax
 	push	ebx
@@ -264,7 +265,6 @@ DispReturn:
 	mov	edi, eax
 	pop	ebx
 	pop	eax
-
 	ret
 ; DispReturn 结束---------------------------------------------------------
 
@@ -308,7 +308,7 @@ LDTLen		equ	$ - LABEL_LDT
 
 ; LDT 选择子
 SelectorLDTCodeA	equ	LABEL_LDT_DESC_CODEA	- LABEL_LDT + SA_TIL ;这里是为了置ti为1，因为，无论如何选择子的底3位都为0，一个描述符8字节，无论怎么选择子最低4位都是1000开始
-SelectorLDTCodeB   	equ LABEL_LDT_DESC_CODEB 	- LABEL_LDT + SA_TIL
+SelectorLDTCodeB   	equ LABEL_LDT_DESC_CODEB 	- LABEL_LDT + SA_TIL;同上
 ; END of [SECTION .ldt]
 
 
