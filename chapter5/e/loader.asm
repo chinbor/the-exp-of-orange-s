@@ -356,12 +356,12 @@ LABEL_PM_START:
 	mov	al, 'P'
 	mov	[gs:((80 * 0 + 39) * 2)], ax	; 屏幕第 0 行, 第 39 列。
 
-	call	InitKernel
+	call	InitKernel                      ; 这个函数的作用就是根据elf表头找到program header然后将其复制到p_vadrr处（虚拟地址就是物理地址，对等映射）
 
 	;jmp	$
 
 	;***************************************************************
-	jmp	SelectorFlatC:KernelEntryPointPhyAddr	; 正式进入内核 *
+	jmp	SelectorFlatC:KernelEntryPointPhyAddr	; 正式进入内核 *意思就是进入内存地址30400h，由于调用InitKernel的时候就已经将整理的内核复制到了30000h处
 	;***************************************************************
 	; 内存看上去是这样的：
 	;              ┃                                    ┃
