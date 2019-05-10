@@ -1,0 +1,168 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ARDStruct	boot/loader.asm	/^ARDStruct		equ	BaseOfLoaderPhyAddr + _ARDStruct$/;"	d
+ASM	Makefile	/^ASM		= nasm$/;"	m
+ASMBFLAGS	Makefile	/^ASMBFLAGS	= -I boot\/include\/$/;"	m
+ASMKFLAGS	Makefile	/^ASMKFLAGS	= -I include\/ -f elf$/;"	m
+BaseOfStack	boot/boot.asm	/^BaseOfStack		equ	0100h	; 调试状态下堆栈基地址(栈底, 从这个位置向低地址生长)$/;"	d
+BaseOfStack	boot/boot.asm	/^BaseOfStack		equ	07c00h	; Boot状态下堆栈基地址(栈底, 从这个位置向低地址生长)$/;"	d
+BaseOfStack	boot/loader.asm	/^BaseOfStack	equ	0100h$/;"	d
+BootMessage	boot/boot.asm	/^BootMessage:		db	"Booting  "; 9字节, 不够则用空格补齐. 序号 0$/;"	d
+CC	Makefile	/^CC		= gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS		= -I include\/ -c -fno-builtin$/;"	m
+DASM	Makefile	/^DASM	= ndisasm$/;"	m
+DASMFLAGS	Makefile	/^DASMFLAGS	= -u -o $(ENTRYPOINT) -e $(ENTRYOFFSET)$/;"	m
+DASMOUTPUT	Makefile	/^DASMOUTPUT	= kernel.bin.asm$/;"	m
+DESCRIPTOR	include/protect.h	/^}DESCRIPTOR;$/;"	t	typeref:struct:s_descriptor
+DispAL	boot/loader.asm	/^DispAL:$/;"	l
+DispInt	boot/loader.asm	/^DispInt:$/;"	l
+DispMemInfo	boot/loader.asm	/^DispMemInfo:$/;"	l
+DispReturn	boot/loader.asm	/^DispReturn:$/;"	l
+DispStr	boot/boot.asm	/^DispStr:$/;"	l
+DispStr	boot/loader.asm	/^DispStr:$/;"	l
+DispStrRealMode	boot/loader.asm	/^DispStrRealMode:$/;"	l
+ENTRYOFFSET	Makefile	/^ENTRYOFFSET	=   0x400$/;"	m
+ENTRYPOINT	Makefile	/^ENTRYPOINT	= 0x30400$/;"	m
+GDT_SIZE	include/const.h	17;"	d
+GdtLen	boot/loader.asm	/^GdtLen		equ	$ - LABEL_GDT$/;"	d
+GdtPtr	boot/loader.asm	/^GdtPtr		dw	GdtLen - 1				; 段界限$/;"	d
+GetFATEntry	boot/boot.asm	/^GetFATEntry:$/;"	l
+GetFATEntry	boot/loader.asm	/^GetFATEntry:$/;"	l
+InitKernel	boot/loader.asm	/^InitKernel:	; 遍历每一个 Program Header，根据 Program Header 中的信息来确定把什么放进内存，放到什么位置，以及放多少。$/;"	l
+KernelFileName	boot/loader.asm	/^KernelFileName		db	"KERNEL  BIN", 0	; KERNEL.BIN 之文件名$/;"	d
+KillMotor	boot/loader.asm	/^KillMotor:$/;"	l
+LABEL_CMP_FILENAME	boot/boot.asm	/^LABEL_CMP_FILENAME:$/;"	l
+LABEL_CMP_FILENAME	boot/loader.asm	/^LABEL_CMP_FILENAME:$/;"	l
+LABEL_DATA	boot/loader.asm	/^LABEL_DATA:$/;"	l
+LABEL_DESC_FLAT_C	boot/loader.asm	/^LABEL_DESC_FLAT_C:		Descriptor             0,              0fffffh, DA_CR  | DA_32 | DA_LIMIT_4K			; 0 ~ 4G$/;"	l
+LABEL_DESC_FLAT_RW	boot/loader.asm	/^LABEL_DESC_FLAT_RW:		Descriptor             0,              0fffffh, DA_DRW | DA_32 | DA_LIMIT_4K			; 0 ~ 4G$/;"	l
+LABEL_DESC_VIDEO	boot/loader.asm	/^LABEL_DESC_VIDEO:		Descriptor	 0B8000h,               0ffffh, DA_DRW                         | DA_DPL3	; 显存首地址$/;"	l
+LABEL_DIFFERENT	boot/boot.asm	/^LABEL_DIFFERENT:$/;"	l
+LABEL_DIFFERENT	boot/loader.asm	/^LABEL_DIFFERENT:$/;"	l
+LABEL_EVEN_2	boot/boot.asm	/^LABEL_EVEN_2:$/;"	l
+LABEL_EVEN_2	boot/loader.asm	/^LABEL_EVEN_2:$/;"	l
+LABEL_FILENAME_FOUND	boot/boot.asm	/^LABEL_FILENAME_FOUND:			; 找到 LOADER.BIN 后便来到这里继续$/;"	l
+LABEL_FILENAME_FOUND	boot/loader.asm	/^LABEL_FILENAME_FOUND:			; 找到 KERNEL.BIN 后便来到这里继续$/;"	l
+LABEL_FILE_LOADED	boot/boot.asm	/^LABEL_FILE_LOADED:$/;"	l
+LABEL_FILE_LOADED	boot/loader.asm	/^LABEL_FILE_LOADED:$/;"	l
+LABEL_GDT	boot/loader.asm	/^LABEL_GDT:			Descriptor             0,                    0, 0						; 空描述符$/;"	l
+LABEL_GET_FAT_ENRY_OK	boot/boot.asm	/^LABEL_GET_FAT_ENRY_OK:$/;"	l
+LABEL_GET_FAT_ENRY_OK	boot/loader.asm	/^LABEL_GET_FAT_ENRY_OK:$/;"	l
+LABEL_GOON_LOADING_FILE	boot/boot.asm	/^LABEL_GOON_LOADING_FILE:$/;"	l
+LABEL_GOON_LOADING_FILE	boot/loader.asm	/^LABEL_GOON_LOADING_FILE:$/;"	l
+LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR	boot/boot.asm	/^LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR:$/;"	l
+LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR	boot/loader.asm	/^LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR:$/;"	l
+LABEL_GO_ON	boot/boot.asm	/^LABEL_GO_ON:$/;"	l
+LABEL_GO_ON	boot/loader.asm	/^LABEL_GO_ON:$/;"	l
+LABEL_NO_KERNELBIN	boot/loader.asm	/^LABEL_NO_KERNELBIN:$/;"	l
+LABEL_NO_LOADERBIN	boot/boot.asm	/^LABEL_NO_LOADERBIN:$/;"	l
+LABEL_PM_START	boot/loader.asm	/^LABEL_PM_START:$/;"	l
+LABEL_SEARCH_FOR_KERNELBIN	boot/loader.asm	/^LABEL_SEARCH_FOR_KERNELBIN:$/;"	l
+LABEL_SEARCH_FOR_LOADERBIN	boot/boot.asm	/^LABEL_SEARCH_FOR_LOADERBIN:$/;"	l
+LABEL_SEARCH_IN_ROOT_DIR_BEGIN	boot/boot.asm	/^LABEL_SEARCH_IN_ROOT_DIR_BEGIN:$/;"	l
+LABEL_SEARCH_IN_ROOT_DIR_BEGIN	boot/loader.asm	/^LABEL_SEARCH_IN_ROOT_DIR_BEGIN:$/;"	l
+LABEL_START	boot/boot.asm	/^LABEL_START:	$/;"	l
+LABEL_START	boot/loader.asm	/^LABEL_START:			; <--- 从这里开始 *************$/;"	l
+LD	Makefile	/^LD		= ld$/;"	m
+LDFLAGS	Makefile	/^LDFLAGS		= -s -Ttext $(ENTRYPOINT)$/;"	m
+LoadMessage	boot/loader.asm	/^LoadMessage:		db	"Loading  "$/;"	d
+LoaderFileName	boot/boot.asm	/^LoaderFileName		db	"LOADER  BIN", 0	; LOADER.BIN 之文件名$/;"	d
+MemChkBuf	boot/loader.asm	/^MemChkBuf		equ	BaseOfLoaderPhyAddr + _MemChkBuf$/;"	d
+MemCpy	boot/loader.asm	/^MemCpy:$/;"	l
+Message1	boot/boot.asm	/^Message1		db	"Ready.   "; 9字节, 不够则用空格补齐. 序号 1$/;"	d
+Message1	boot/loader.asm	/^Message1		db	"Ready.   "$/;"	d
+Message2	boot/boot.asm	/^Message2		db	"No LOADER"; 9字节, 不够则用空格补齐. 序号 2$/;"	d
+Message2	boot/loader.asm	/^Message2		db	"No KERNEL"$/;"	d
+MessageLength	boot/boot.asm	/^MessageLength		equ	9$/;"	d
+MessageLength	boot/loader.asm	/^MessageLength		equ	9$/;"	d
+OBJS	Makefile	/^OBJS		= kernel\/kernel.o kernel\/start.o lib\/kliba.o lib\/string.o$/;"	m
+ORANGESBOOT	Makefile	/^ORANGESBOOT	= boot\/boot.bin boot\/loader.bin$/;"	m
+ORANGESKERNEL	Makefile	/^ORANGESKERNEL	= kernel.bin$/;"	m
+PRIVATE	include/const.h	14;"	d
+PUBLIC	include/const.h	13;"	d
+ReadSector	boot/boot.asm	/^ReadSector:$/;"	l
+ReadSector	boot/loader.asm	/^ReadSector:$/;"	l
+SELECTOR_KERNEL_CS	kernel/kernel.asm	/^SELECTOR_KERNEL_CS	equ	8	;这里用8是为了选中执行代码段也就是描述符LABEL_DESC_FLAT_C(一个描述符占8字节)$/;"	d
+SelectorFlatC	boot/loader.asm	/^SelectorFlatC		equ	LABEL_DESC_FLAT_C	- LABEL_GDT$/;"	d
+SelectorFlatRW	boot/loader.asm	/^SelectorFlatRW		equ	LABEL_DESC_FLAT_RW	- LABEL_GDT$/;"	d
+SelectorVideo	boot/loader.asm	/^SelectorVideo		equ	LABEL_DESC_VIDEO	- LABEL_GDT + SA_RPL3$/;"	d
+SetupPaging	boot/loader.asm	/^SetupPaging:$/;"	l
+StackSpace	boot/loader.asm	/^StackSpace:	times	1000h	db	0$/;"	l
+StackSpace	kernel/kernel.asm	/^StackSpace		resb	2 * 1024$/;"	l
+StackTop	kernel/kernel.asm	/^StackTop:		; 栈顶$/;"	l
+TopOfStack	boot/loader.asm	/^TopOfStack	equ	BaseOfLoaderPhyAddr + $	; 栈顶$/;"	d
+_ARDStruct	boot/loader.asm	/^_ARDStruct:			; Address Range Descriptor Structure$/;"	l
+_MemChkBuf	boot/loader.asm	/^_MemChkBuf:	times	256	db	0$/;"	l
+_ORANGES_CONST_H_	include/const.h	9;"	d
+_ORANGES_PROTECT_H_	include/protect.h	9;"	d
+_ORANGES_TYPE_H_	include/type.h	9;"	d
+_dwBaseAddrHigh	boot/loader.asm	/^	_dwBaseAddrHigh:	dd	0$/;"	d
+_dwBaseAddrLow	boot/loader.asm	/^	_dwBaseAddrLow:		dd	0$/;"	d
+_dwDispPos	boot/loader.asm	/^_dwDispPos:			dd	(80 * 6 + 0) * 2	; 屏幕第 6 行, 第 0 列。$/;"	d
+_dwLengthHigh	boot/loader.asm	/^	_dwLengthHigh:		dd	0$/;"	d
+_dwLengthLow	boot/loader.asm	/^	_dwLengthLow:		dd	0$/;"	d
+_dwMCRNumber	boot/loader.asm	/^_dwMCRNumber:			dd	0	; Memory Check Result$/;"	d
+_dwMemSize	boot/loader.asm	/^_dwMemSize:			dd	0$/;"	d
+_dwType	boot/loader.asm	/^	_dwType:		dd	0$/;"	d
+_start	kernel/kernel.asm	/^_start:     ;地址为0x30400$/;"	l
+_szMemChkTitle	boot/loader.asm	/^_szMemChkTitle:			db	"BaseAddrL BaseAddrH LengthLow LengthHigh   Type", 0Ah, 0$/;"	d
+_szRAMSize	boot/loader.asm	/^_szRAMSize:			db	"RAM size:", 0$/;"	d
+_szReturn	boot/loader.asm	/^_szReturn:			db	0Ah, 0$/;"	d
+attr1	include/protect.h	/^	u8	attr1;			\/* P(1) DPL(2) DT(1) TYPE(4) *\/$/;"	m	struct:s_descriptor
+bOdd	boot/boot.asm	/^bOdd			db	0		; 奇数还是偶数$/;"	d
+bOdd	boot/loader.asm	/^bOdd			db	0		; 奇数还是偶数$/;"	d
+base_high	include/protect.h	/^	u8	base_high;		\/* Base *\/$/;"	m	struct:s_descriptor
+base_low	include/protect.h	/^	u16	base_low;		\/* Base *\/$/;"	m	struct:s_descriptor
+base_mid	include/protect.h	/^	u8	base_mid;		\/* Base *\/$/;"	m	struct:s_descriptor
+csinit	kernel/kernel.asm	/^csinit:		; 地址为0x3041f$/;"	l
+cstart	kernel/start.c	/^PUBLIC void cstart()$/;"	f
+dec	boot/boot.asm	/^	dec	dx					; ┛就跳到下一个 Sector$/;"	d
+dec	boot/boot.asm	/^dec	cx$/;"	l
+dec	boot/loader.asm	/^	dec	dx					; ┛$/;"	d
+disp_pos	lib/kliba.asm	/^disp_pos	dd	0$/;"	d
+disp_str	lib/kliba.asm	/^disp_str:$/;"	l
+dw	boot/boot.asm	/^dw 	0xaa55				; 结束标志$/;"	l
+dwBaseAddrHigh	boot/loader.asm	/^	dwBaseAddrHigh	equ	BaseOfLoaderPhyAddr + _dwBaseAddrHigh$/;"	d
+dwBaseAddrLow	boot/loader.asm	/^	dwBaseAddrLow	equ	BaseOfLoaderPhyAddr + _dwBaseAddrLow$/;"	d
+dwDispPos	boot/loader.asm	/^dwDispPos		equ	BaseOfLoaderPhyAddr + _dwDispPos$/;"	d
+dwKernelSize	boot/loader.asm	/^dwKernelSize		dd	0		; KERNEL.BIN 文件大小$/;"	d
+dwLengthHigh	boot/loader.asm	/^	dwLengthHigh	equ	BaseOfLoaderPhyAddr + _dwLengthHigh$/;"	d
+dwLengthLow	boot/loader.asm	/^	dwLengthLow	equ	BaseOfLoaderPhyAddr + _dwLengthLow$/;"	d
+dwMCRNumber	boot/loader.asm	/^dwMCRNumber		equ	BaseOfLoaderPhyAddr + _dwMCRNumber$/;"	d
+dwMemSize	boot/loader.asm	/^dwMemSize		equ	BaseOfLoaderPhyAddr + _dwMemSize$/;"	d
+dwType	boot/loader.asm	/^	dwType		equ	BaseOfLoaderPhyAddr + _dwType$/;"	d
+extern	kernel/kernel.asm	/^extern	cstart      ; 再start.c中$/;"	l
+extern	kernel/kernel.asm	/^extern	gdt_ptr     ; 再start.c中$/;"	l
+gdt	kernel/start.c	/^PUBLIC	DESCRIPTOR	gdt[GDT_SIZE];  \/* 128个DESCRIPTOR *\/$/;"	v
+gdt_ptr	kernel/start.c	/^PUBLIC	u8		gdt_ptr[6];	\/* 0~15:Limit  16~47:Base *\/$/;"	v
+global	kernel/kernel.asm	/^global _start	; 导出 _start$/;"	l
+global	lib/kliba.asm	/^global	disp_str$/;"	l
+global	lib/string.asm	/^global	memcpy$/;"	l
+inc	boot/boot.asm	/^	inc	di$/;"	d
+inc	boot/loader.asm	/^	inc	di$/;"	d
+limit_high_attr2	include/protect.h	/^	u8	limit_high_attr2;	\/* G(1) D(1) 0(1) AVL(1) LimitHigh(4) *\/$/;"	m	struct:s_descriptor
+limit_low	include/protect.h	/^	u16	limit_low;		\/* Limit *\/$/;"	m	struct:s_descriptor
+memcpy	lib/string.asm	/^memcpy:$/;"	l
+mul	boot/boot.asm	/^	mul	dh$/;"	d
+mul	boot/loader.asm	/^	mul	dh$/;"	d
+org	boot/loader.asm	/^org  0100h$/;"	l
+pop	boot/boot.asm	/^	pop	dx$/;"	d
+pop	boot/loader.asm	/^	pop	dx$/;"	d
+push	boot/boot.asm	/^	push	dx$/;"	d
+push	boot/loader.asm	/^	push	dx$/;"	d
+s_descriptor	include/protect.h	/^typedef struct s_descriptor		\/* 共 8 个字节 *\/$/;"	s
+szMemChkTitle	boot/loader.asm	/^szMemChkTitle		equ	BaseOfLoaderPhyAddr + _szMemChkTitle$/;"	d
+szRAMSize	boot/loader.asm	/^szRAMSize		equ	BaseOfLoaderPhyAddr + _szRAMSize$/;"	d
+szReturn	boot/loader.asm	/^szReturn		equ	BaseOfLoaderPhyAddr + _szReturn$/;"	d
+times	boot/boot.asm	/^times 	510-($-$$)	db	0	; 填充剩下的空间，使生成的二进制代码恰好为512字节$/;"	l
+u16	include/type.h	/^typedef	unsigned short		u16;    \/* 一个 short 2字节16位 *\/$/;"	t
+u32	include/type.h	/^typedef	unsigned int		u32;    \/* 一个 int 4字节32位 *\/$/;"	t
+u8	include/type.h	/^typedef	unsigned char		u8;     \/* 一个 char 1字节8位 *\/$/;"	t
+wRootDirSizeForLoop	boot/boot.asm	/^wRootDirSizeForLoop	dw	RootDirSectors	; Root Directory 占用的扇区数, 在循环中会递减至零.$/;"	d
+wRootDirSizeForLoop	boot/loader.asm	/^wRootDirSizeForLoop	dw	RootDirSectors	; Root Directory 占用的扇区数$/;"	d
+wSectorNo	boot/boot.asm	/^wSectorNo		dw	0		; 要读取的扇区号$/;"	d
+wSectorNo	boot/loader.asm	/^wSectorNo		dw	0		; 要读取的扇区号$/;"	d
