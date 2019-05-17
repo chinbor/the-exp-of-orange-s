@@ -34,6 +34,7 @@ extern	idt_ptr			; 在global.h中
 extern	disp_pos		; 再global.h中
 extern	p_proc_ready	; 再global.h中
 extern	tss				; 再global.h中
+extern	k_reenter		; 再global.h中声明
 
 bits	32
 
@@ -133,27 +134,33 @@ hwint00:                ; Interrupt routine for irq 0 (the clock).由testa函数
 		mov ds,dx
 		mov es,dx
 
-		mov esp,StackTop  ;使用内核栈
 		inc byte [gs:0]	
 		mov al,EOI
 		out INT_M_CTL,al
 		
+		inc dword [k_reenter]		;这是一个全局变量，初始值为-1，目的是为了防止中断的嵌套，也就是上一个中断还没执行结束，下一个中断就开始执行了
+		cmp dword [k_reenter],0		;同0作比较，若不为0（说明一次中断还没处理完又发生了一次中断）就跳转
+		jne .re_enter
+
+		mov esp,StackTop  ;使用内核栈
+
 		sti
 
 		push clock_int_msg
 		call disp_str
 		add esp,4
 
-		push 1
-		call delay		; 注意这里的delay函数是运行再内核的0-4gb段地址空间的，而不是testa中的那个delay函数运行再进程的0-4gb地址空间
-		add esp,4
+		;push 1
+		;call delay		; 注意这里的delay函数（触发始终中断）是运行再内核的0-4gb段地址空间的，而不是testa中的那个delay函数运行再进程的0-4gb地址空间
+		;add esp,4
 		
-		cli
+		cli				; 即便这里关了中断，也就是if位为0，但是之前保存的eflags中已经将if置位1了，所以后面出栈操作将会打开if位
 
 		mov esp,[p_proc_ready]
 		lea eax,[esp+P_STACKTOP]
 		mov dword [tss+TSS3_S_SP0],eax
-
+.re_enter:
+		dec dword [k_reenter]
 		pop gs			; ---------------------------------------------------------------------------------------------------------- 
 		pop fs          ;
 		pop es          ;				恢复进程A的寄存器，这样才能恢复进程a状态，从而继续执行
