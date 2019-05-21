@@ -44,13 +44,14 @@ PUBLIC void init_8259A()
 	/* 从8259a, ICW4. */
 	out_byte(INT_S_CTLMASK,	0x1);
 
-	/* 主8259a, OCW1.打开主8259的时钟中断  */
+	/* 主8259a, OCW1.屏蔽主8259的所有中断  */
 	out_byte(INT_M_CTLMASK,	0xFF);
 
 	/* 从8259a, OCW1.屏蔽从8259的所有中断  */
 	out_byte(INT_S_CTLMASK,	0xFF);
 
 	int i;
+	/* 初始化中断表中每一个元素都指向spurious_irq的地址,中断处理函数 */
 	for(i=0;i<NR_IRQ;i++){
 		irq_table[i] = spurious_irq; 
 	}
@@ -72,6 +73,8 @@ PUBLIC void spurious_irq(int irq)
  *======================================================================*/
 PUBLIC void put_irq_handler(int irq, irq_handler handler)
 {
+	/* 关掉对应中断号为irq的中断 */
 	disable_irq(irq);
+	/* 初始化中断表(每个元素都是一个函数指针)中的元素为对应的中断处理函数的地址 */
 	irq_table[irq] = handler;
 }

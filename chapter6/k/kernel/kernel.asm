@@ -32,12 +32,13 @@ StackTop:		; 栈顶
 [SECTION .data]
 clock_int_msg	db		"^",0
 
-
 [section .text]	; 代码在此
 
 global _start	; 导出 _start  地址为:0x30400,特权级为0
 
 global restart
+
+;导出中断例程函数
 
 global divide_error
 global single_step_exception
@@ -81,7 +82,7 @@ _start:     ;地址为0x30400
 	mov dword [disp_pos],0			; 初始化值为0
 
 	sgdt	[gdt_ptr]				; 将gdtr寄存器中的值给到gdt_ptr地址所指的内存处
-	call	cstart					; 在此函数中改变了gdt_ptr地址所指内存的内容（gdt基址和界限），让它指向&gdt，还有就是让idt_ptr地址所指内存处的内容指向了&idt，以及初始化了idt表,
+	call	cstart					; 在此函数中改变了gdt_ptr地址所指内存的内容（gdt基址和界限），让它指向&gdt，还有就是让idt_ptr地址所指内存处的内容指向了&idt，以及初始化了idt表,初始化了tss，每个进程的ldt表在gdt中的描述符
 	lgdt	[gdt_ptr]				; 使用新的GDT，加载新的gdt基址和界限
 
 	lidt	[idt_ptr]				; 加载idt
@@ -96,8 +97,8 @@ csinit:
 	jmp kernel_main						; 由于kernel.bin是加载再0x30000的，但是实际代码是在0x30400,所以这里的后面的代码都是再这个地址以上
 
 
-; 中断和异常 -- 硬件中断
-; ---------------------------------
+; 中断和异常 -- 外部中断
+; -------------------------------------------------------------主8259a------------------------------------------------------------------------------------
 %macro  hwint_master    1
 
 		call save				; 使用save目的是为了简化中断例程，优化代码
@@ -111,7 +112,7 @@ csinit:
 		
 		sti							; cpu在响应中断的过程中会自动关中断，这句之后就可以响应新的中断
 		push %1
-		call [irq_table + 4 * %1]	; 中断处理程序
+		call [irq_table + 4 * %1]	; 中断处理程序,加4×%1是因为每一个中断处理函数的地址为32位，也就是4字节
 		pop ecx						; 这里的cx的值就是前面push %1的值
 		cli						; 即便这里关了中断，也就是if位为0，但是之前保存的eflags中已经将if置位1了，所以后面出栈操作将会打开if位
 
@@ -122,9 +123,9 @@ csinit:
 		ret						; 注意这一条ret指令，他表示返回的是restart（没有发生中断重入）或则restart_reenter（发生了中断重入）
 
 %endmacro
-; ---------------------------------
+; --------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ALIGN   16				; 16字节对齐，也就是地址必须是0x10的整数倍
+ALIGN   16				; 16字节对齐，也就是地址必须是0x10的整数倍,注意这里的中断号再实际的idt表中都是加了0x20的，也就是hwint00对应0x20
 hwint00:				; Interrupt routine for irq 0 (the clock).由testa函数中的delay函数触发，由于涉及特权级的转换，所以需要tss中ring0的ss和esp，然后保存a进程的状态
 		hwint_master	0
 
@@ -156,17 +157,17 @@ ALIGN   16
 hwint07:                ; Interrupt routine for irq 7 (printer)
         hwint_master    7
 
-; ---------------------------------
+; -------------------------------------------------------------从8259a------------------------------------------------------------------------------------
 %macro  hwint_slave     1
         push    %1
         call    spurious_irq
         add     esp, 4
         hlt
 %endmacro
-; ---------------------------------
+; --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ALIGN   16
-hwint08:                ; Interrupt routine for irq 8 (realtime clock).
+hwint08:                ; Interrupt routine for irq 8 (realtime clock).注意这里的中断号，再idt表中都是加了0x28的也就是hwint08对应的0x28
         hwint_slave     8
 
 ALIGN   16
@@ -311,4 +312,4 @@ restart_reenter:
 
 	add	esp, 4
 
-	iretd									; 执行这一句后就会跳转到testa（）函数执行
+	iretd									; 执行这一句后就会跳转到testa（）函数执行,o特权级到1特权级的返回
