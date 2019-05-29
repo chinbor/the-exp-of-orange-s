@@ -13,7 +13,7 @@
 #include "keyboard.h"
 
 PRIVATE	int countUp = 1;
-PRIVATE	int PrityControl = 0;
+PRIVATE	int Count = 0;
 
 //PRIVATE	int countDown = -1;
 /*======================================================================*
@@ -37,7 +37,7 @@ PUBLIC void in_process(u32 key)
         char output[2] = {'\0', '\0'};
         if (!(key & FLAG_EXT)) {
                 output[0] = key & 0xFF;
-				if(PrityControl % 2 == 0){
+				if(Count % 2 == 0){
 					// 字符输出属性为 0000 1100，也就是背景色为蓝色，前景色为亮白
 					disp_color_str(output,MAKE_COLOR(BRIGHT | 0x10,WHITE));
 					disable_int();
@@ -46,18 +46,23 @@ PUBLIC void in_process(u32 key)
 					out_byte(CRTC_DATA_REG, ((disp_pos/2)>>8)&0xFF);
 					out_byte(CRTC_ADDR_REG, CURSOR_L);
 					out_byte(CRTC_DATA_REG, (disp_pos/2)&0xFF);
-					PrityControl++;
+					// 注意这里一般利用disp_pos来进行位置的定位，而不是自己单独设置一个全局变量来定位
+					if(disp_pos % 160 == 0){
+						Count++;
+					}
 					enable_int();
 				}else{
-					// 字符输出属性为 0001 1010，也就是背景色为蓝色，前景色为亮白
-					disp_color_str(output,MAKE_COLOR(BRIGHT | 0x10,WHITE));
+					// 字符输出属性为 0001 1010，也就是背景色为绿色，前景色为亮白
+					disp_color_str(output,MAKE_COLOR(BRIGHT | 0x20,WHITE));
 					disable_int();
 					// 设置光标跟随字符
 					out_byte(CRTC_ADDR_REG, CURSOR_H);
 					out_byte(CRTC_DATA_REG, ((disp_pos/2)>>8)&0xFF);
 					out_byte(CRTC_ADDR_REG, CURSOR_L);
 					out_byte(CRTC_DATA_REG, (disp_pos/2)&0xFF);
-					PrityControl++;
+					if(disp_pos % 160 == 0){
+						Count++;
+					}
 					enable_int();
 				}
         }else{
