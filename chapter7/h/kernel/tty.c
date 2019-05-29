@@ -15,7 +15,7 @@
 PRIVATE	int countUp = 1;
 PRIVATE	int Count = 0;
 
-//PRIVATE	int countDown = -1;
+PRIVATE	int countDown = 1;
 /*======================================================================*
                            task_tty
  *======================================================================*/
@@ -75,19 +75,23 @@ PUBLIC void in_process(u32 key)
                                 out_byte(CRTC_DATA_REG, ((80*countUp) >> 8) & 0xFF);
                                 out_byte(CRTC_ADDR_REG, START_ADDR_L);
                                 out_byte(CRTC_DATA_REG, (80*countUp) & 0xFF);
+								countDown = countUp;
+								countDown--;
 								countUp++;
                                 enable_int();
                         }
                         break;
                 case DOWN:
                         if ((key & FLAG_SHIFT_L) || (key & FLAG_SHIFT_R)) {
-                            //    disable_int();
-                            //    out_byte(CRTC_ADDR_REG, START_ADDR_H);
-                            //    out_byte(CRTC_DATA_REG, ((80*countDown) >> 8) & 0xFF);
-                            //    out_byte(CRTC_ADDR_REG, START_ADDR_L);
-                            //    out_byte(CRTC_DATA_REG, (80*countDown) & 0xFF);
-							//	  countDown--;
-                            //    enable_int();
+                                disable_int();
+                                out_byte(CRTC_ADDR_REG, START_ADDR_H);
+                                out_byte(CRTC_DATA_REG, ((80*countDown) >> 8) & 0xFF);
+                                out_byte(CRTC_ADDR_REG, START_ADDR_L);
+                                out_byte(CRTC_DATA_REG, (80*countDown) & 0xFF);
+								countUp = countDown;
+								countUp++;
+								countDown--;
+                                enable_int();
                         }
                         break;
                 default:

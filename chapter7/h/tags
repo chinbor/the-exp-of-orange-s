@@ -11,7 +11,7 @@ ARDStruct	boot/loader.asm	/^ARDStruct		equ	BaseOfLoaderPhyAddr + _ARDStruct$/;"	
 ASM	Makefile	/^ASM		= nasm$/;"	m
 ASMBFLAGS	Makefile	/^ASMBFLAGS	= -I boot\/include\/$/;"	m
 ASMKFLAGS	Makefile	/^ASMKFLAGS	= -I include\/ -f elf$/;"	m
-AT_WINI_IRQ	include/const.h	84;"	d
+AT_WINI_IRQ	include/const.h	94;"	d
 BACKSPACE	include/keyboard.h	37;"	d
 BLACK	include/const.h	27;"	d
 BLUE	include/const.h	31;"	d
@@ -21,12 +21,17 @@ BaseOfStack	boot/boot.asm	/^BaseOfStack		equ	07c00h	; Boot状态下堆栈基地�
 BaseOfStack	boot/loader.asm	/^BaseOfStack	equ	0100h$/;"	d
 BootMessage	boot/boot.asm	/^BootMessage:		db	"Booting  "; 9字节, 不够则用空格补齐. 序号 0$/;"	d
 CAPS_LOCK	include/keyboard.h	52;"	d
-CASCADE_IRQ	include/const.h	77;"	d
+CASCADE_IRQ	include/const.h	87;"	d
 CC	Makefile	/^CC		= gcc$/;"	m
 CFLAGS	Makefile	/^CFLAGS		= -I include\/ -c -fno-builtin -fno-stack-protector$/;"	m
-CLOCK_IRQ	include/const.h	75;"	d
+CLOCK_IRQ	include/const.h	85;"	d
+CRTC_ADDR_REG	include/const.h	74;"	d
+CRTC_DATA_REG	include/const.h	75;"	d
 CTRL_L	include/keyboard.h	46;"	d
 CTRL_R	include/keyboard.h	47;"	d
+CURSOR_H	include/const.h	78;"	d
+CURSOR_L	include/const.h	79;"	d
+Count	kernel/tty.c	/^PRIVATE	int Count = 0;$/;"	v
 DASM	Makefile	/^DASM	= ndisasm$/;"	m
 DASMFLAGS	Makefile	/^DASMFLAGS	= -u -o $(ENTRYPOINT) -e $(ENTRYOFFSET)$/;"	m
 DASMOUTPUT	Makefile	/^DASMOUTPUT	= kernel.bin.asm$/;"	m
@@ -64,7 +69,7 @@ ENTER	include/keyboard.h	36;"	d
 ENTRYOFFSET	Makefile	/^ENTRYOFFSET	=   0x400$/;"	m
 ENTRYPOINT	Makefile	/^ENTRYPOINT	= 0x30400$/;"	m
 ESC	include/keyboard.h	34;"	d
-ETHER_IRQ	include/const.h	78;"	d
+ETHER_IRQ	include/const.h	88;"	d
 EXTERN	include/const.h	11;"	d
 EXTERN	include/global.h	10;"	d
 EXTERN	include/global.h	9;"	d
@@ -91,7 +96,7 @@ FLAG_PAD	include/keyboard.h	27;"	d
 FLAG_SHIFT_L	include/keyboard.h	21;"	d
 FLAG_SHIFT_R	include/keyboard.h	22;"	d
 FLASH	include/const.h	32;"	d
-FLOPPY_IRQ	include/const.h	82;"	d
+FLOPPY_IRQ	include/const.h	92;"	d
 GATE	include/protect.h	/^}GATE;$/;"	t	typeref:struct:s_gate
 GDT_SIZE	include/const.h	37;"	d
 GLOBAL_VARIABLES_HERE	kernel/global.c	7;"	d	file:
@@ -141,7 +146,7 @@ KB_CMD	include/const.h	69;"	d
 KB_DATA	include/const.h	66;"	d
 KB_INPUT	include/keyboard.h	/^}KB_INPUT;$/;"	t	typeref:struct:s_kb
 KB_IN_BYTES	include/keyboard.h	15;"	d
-KEYBOARD_IRQ	include/const.h	76;"	d
+KEYBOARD_IRQ	include/const.h	86;"	d
 KernelFileName	boot/loader.asm	/^KernelFileName		db	"KERNEL  BIN", 0	; KERNEL.BIN 之文件名$/;"	d
 KillMotor	boot/loader.asm	/^KillMotor:$/;"	l
 LABEL_CMP_FILENAME	boot/boot.asm	/^LABEL_CMP_FILENAME:$/;"	l
@@ -193,9 +198,9 @@ Message2	boot/boot.asm	/^Message2		db	"No LOADER"; 9字节, 不够则用空格�
 Message2	boot/loader.asm	/^Message2		db	"No KERNEL"$/;"	d
 MessageLength	boot/boot.asm	/^MessageLength		equ	9$/;"	d
 MessageLength	boot/loader.asm	/^MessageLength		equ	9$/;"	d
-NR_IRQ	include/const.h	74;"	d
+NR_IRQ	include/const.h	84;"	d
 NR_SCAN_CODES	include/keyboard.h	17;"	d
-NR_SYS_CALL	include/const.h	87;"	d
+NR_SYS_CALL	include/const.h	97;"	d
 NR_TASKS	include/proc.h	48;"	d
 NUM_LOCK	include/keyboard.h	53;"	d
 OBJS	Makefile	/^OBJS		= kernel\/kernel.o kernel\/start.o kernel\/keyboard.o kernel\/tty.o  kernel\/main.o kernel\/proc.o kernel\/clock.o kernel\/i8259.o kernel\/global.o kernel\/protect.o kernel\/syscall.o lib\/klib.o lib\/kliba.o lib\/string.o$/;"	m
@@ -232,7 +237,7 @@ PAGEDOWN	include/keyboard.h	78;"	d
 PAGEUP	include/keyboard.h	77;"	d
 PAUSEBREAK	include/keyboard.h	72;"	d
 POWER	include/keyboard.h	85;"	d
-PRINTER_IRQ	include/const.h	83;"	d
+PRINTER_IRQ	include/const.h	93;"	d
 PRINTSCREEN	include/keyboard.h	71;"	d
 PRIVATE	include/const.h	15;"	d
 PRIVILEGE_KRNL	include/const.h	42;"	d
@@ -246,7 +251,7 @@ RIGHT	include/keyboard.h	82;"	d
 RPL_KRNL	include/const.h	47;"	d
 RPL_TASK	include/const.h	48;"	d
 RPL_USER	include/const.h	49;"	d
-RS232_IRQ	include/const.h	80;"	d
+RS232_IRQ	include/const.h	90;"	d
 ReadSector	boot/boot.asm	/^ReadSector:$/;"	l
 ReadSector	boot/loader.asm	/^ReadSector:$/;"	l
 SA_RPL0	include/protect.h	93;"	d
@@ -258,7 +263,7 @@ SA_TIG	include/protect.h	99;"	d
 SA_TIL	include/protect.h	100;"	d
 SA_TI_MASK	include/protect.h	98;"	d
 SCROLL_LOCK	include/keyboard.h	54;"	d
-SECONDARY_IRQ	include/const.h	79;"	d
+SECONDARY_IRQ	include/const.h	89;"	d
 SELECTOR_DUMMY	include/protect.h	75;"	d
 SELECTOR_FLAT_C	include/protect.h	76;"	d
 SELECTOR_FLAT_RW	include/protect.h	77;"	d
@@ -277,6 +282,8 @@ STACK_SIZE_TESTB	include/proc.h	53;"	d
 STACK_SIZE_TESTC	include/proc.h	54;"	d
 STACK_SIZE_TOTAL	include/proc.h	56;"	d
 STACK_SIZE_TTY	include/proc.h	51;"	d
+START_ADDR_H	include/const.h	76;"	d
+START_ADDR_L	include/const.h	77;"	d
 SelectorFlatC	boot/loader.asm	/^SelectorFlatC		equ	LABEL_DESC_FLAT_C	- LABEL_GDT$/;"	d
 SelectorFlatRW	boot/loader.asm	/^SelectorFlatRW		equ	LABEL_DESC_FLAT_RW	- LABEL_GDT$/;"	d
 SelectorVideo	boot/loader.asm	/^SelectorVideo		equ	LABEL_DESC_VIDEO	- LABEL_GDT + SA_RPL3$/;"	d
@@ -296,9 +303,11 @@ TestB	kernel/main.c	/^void TestB()$/;"	f
 TestC	kernel/main.c	/^void TestC()$/;"	f
 TopOfStack	boot/loader.asm	/^TopOfStack	equ	BaseOfLoaderPhyAddr + $	; 栈顶$/;"	d
 UP	include/keyboard.h	79;"	d
+V_MEM_BASE	include/const.h	80;"	d
+V_MEM_SIZE	include/const.h	81;"	d
 WAKE	include/keyboard.h	87;"	d
 WHITE	include/const.h	28;"	d
-XT_WINI_IRQ	include/const.h	81;"	d
+XT_WINI_IRQ	include/const.h	91;"	d
 _ARDStruct	boot/loader.asm	/^_ARDStruct:			; Address Range Descriptor Structure$/;"	l
 _MemChkBuf	boot/loader.asm	/^_MemChkBuf:	times	256	db	0$/;"	l
 _NR_get_ticks	kernel/syscall.asm	/^_NR_get_ticks		equ	0$/;"	d
@@ -343,6 +352,8 @@ copr_error	kernel/kernel.asm	/^copr_error:$/;"	l
 copr_not_available	kernel/kernel.asm	/^copr_not_available:$/;"	l
 copr_seg_overrun	kernel/kernel.asm	/^copr_seg_overrun:$/;"	l
 count	include/keyboard.h	/^	int		count;			\/* 缓冲区中共有多少字节 *\/$/;"	m	struct:s_kb
+countDown	kernel/tty.c	/^PRIVATE	int countDown = 1;$/;"	v
+countUp	kernel/tty.c	/^PRIVATE	int countUp = 1;$/;"	v
 cr3	include/protect.h	/^	u32	cr3;$/;"	m	struct:s_tss
 cs	include/proc.h	/^	u32	cs;			\/* |                                    *\/$/;"	m	struct:s_stackframe
 cs	include/protect.h	/^	u32	cs;$/;"	m	struct:s_tss
