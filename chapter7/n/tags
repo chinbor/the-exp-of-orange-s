@@ -203,6 +203,7 @@ MessageLength	boot/boot.asm	/^MessageLength		equ	9$/;"	d
 MessageLength	boot/loader.asm	/^MessageLength		equ	9$/;"	d
 NR_CONSOLES	include/const.h	52;"	d
 NR_IRQ	include/const.h	89;"	d
+NR_PROCS	include/proc.h	49;"	d
 NR_SCAN_CODES	include/keyboard.h	17;"	d
 NR_SYS_CALL	include/const.h	102;"	d
 NR_TASKS	include/proc.h	48;"	d
@@ -285,11 +286,11 @@ SHIFT_L	include/keyboard.h	44;"	d
 SHIFT_R	include/keyboard.h	45;"	d
 SLEEP	include/keyboard.h	86;"	d
 STACK_FRAME	include/proc.h	/^}STACK_FRAME;$/;"	t	typeref:struct:s_stackframe
-STACK_SIZE_TESTA	include/proc.h	52;"	d
-STACK_SIZE_TESTB	include/proc.h	53;"	d
-STACK_SIZE_TESTC	include/proc.h	54;"	d
-STACK_SIZE_TOTAL	include/proc.h	56;"	d
-STACK_SIZE_TTY	include/proc.h	51;"	d
+STACK_SIZE_TESTA	include/proc.h	53;"	d
+STACK_SIZE_TESTB	include/proc.h	54;"	d
+STACK_SIZE_TESTC	include/proc.h	55;"	d
+STACK_SIZE_TOTAL	include/proc.h	57;"	d
+STACK_SIZE_TTY	include/proc.h	52;"	d
 START_ADDR_H	include/const.h	81;"	d
 START_ADDR_L	include/const.h	82;"	d
 SelectorFlatC	boot/loader.asm	/^SelectorFlatC		equ	LABEL_DESC_FLAT_C	- LABEL_GDT$/;"	d
@@ -592,7 +593,7 @@ pop	boot/boot.asm	/^	pop	dx$/;"	d
 pop	boot/loader.asm	/^	pop	dx$/;"	d
 pop	kernel/kernel.asm	/^	pop	ds$/;"	d
 priority	include/proc.h	/^	int priority;$/;"	m	struct:s_proc
-proc_table	kernel/global.c	/^PUBLIC	PROCESS			proc_table[NR_TASKS];$/;"	v
+proc_table	kernel/global.c	/^PUBLIC	PROCESS			proc_table[NR_TASKS + NR_PROCS];$/;"	v
 push	boot/boot.asm	/^	push	dx$/;"	d
 push	boot/loader.asm	/^	push	dx$/;"	d
 push	kernel/kernel.asm	/^        push    ds      ;  |$/;"	d
@@ -643,7 +644,7 @@ szRAMSize	boot/loader.asm	/^szRAMSize		equ	BaseOfLoaderPhyAddr + _szRAMSize$/;"	
 szReturn	boot/loader.asm	/^szReturn		equ	BaseOfLoaderPhyAddr + _szReturn$/;"	d
 task_f	include/type.h	/^typedef void    (*task_f) ();$/;"	t
 task_stack	kernel/global.c	/^PUBLIC	char			task_stack[STACK_SIZE_TOTAL];$/;"	v
-task_table	kernel/global.c	/^PUBLIC	TASK			task_table[NR_TASKS] = {{task_tty,STACK_SIZE_TTY,"tty"},$/;"	v
+task_table	kernel/global.c	/^PUBLIC	TASK			task_table[NR_TASKS] = {{task_tty,STACK_SIZE_TTY,"tty"}};$/;"	v
 task_tty	kernel/tty.c	/^PUBLIC void task_tty()$/;"	f
 ticks	include/global.h	/^EXTERN	int					 ticks;$/;"	v
 ticks	include/proc.h	/^	int ticks;$/;"	m	struct:s_proc
@@ -656,6 +657,7 @@ tty_table	kernel/global.c	/^PUBLIC	TTY			tty_table[NR_CONSOLES];$/;"	v
 u16	include/type.h	/^typedef	unsigned short		u16;    \/* 一个 short 2字节16位 *\/$/;"	t
 u32	include/type.h	/^typedef	unsigned int		u32;    \/* 一个 int 4字节32位 *\/$/;"	t
 u8	include/type.h	/^typedef	unsigned char		u8;     \/* 一个 char 1字节8位 *\/$/;"	t
+user_proc_table	kernel/global.c	/^PUBLIC	TASK			user_proc_table[NR_PROCS] =	{$/;"	v
 v_mem_limit	include/console.h	/^	unsigned int	v_mem_limit;		\/* 当前控制台占的显存大小 *\/$/;"	m	struct:s_console
 vir2phys	include/protect.h	152;"	d
 wRootDirSizeForLoop	boot/boot.asm	/^wRootDirSizeForLoop	dw	RootDirSectors	; Root Directory 占用的扇区数, 在循环中会递减至零.$/;"	d
