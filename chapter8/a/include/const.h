@@ -143,6 +143,7 @@ void assertion_failure(char *exp, char *file, char *base_file, int line);
 /**
  * @enum msgtype
  * @brief MESSAGE types
+ * 枚举类型，GET_TICKS=2
  */
 enum msgtype {
 	/* 

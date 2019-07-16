@@ -71,6 +71,7 @@ PUBLIC int sys_sendrec(int function, int src_dest, MESSAGE* m, struct proc* p)
 	int ret = 0;
 	int caller = proc2pid(p);
 	MESSAGE* mla = (MESSAGE*)va2la(caller, m);
+	/* 这一步再消息体中的source赋值为caller(也就是进程的消息体的来源) */
 	mla->source = caller;
 
 	assert(mla->source != src_dest);
@@ -124,6 +125,7 @@ PUBLIC int send_recv(int function, int src_dest, MESSAGE* msg)
 
 	switch (function) {
 	case BOTH:
+		/* 这里进入这个函数后进行软中断系统调用,最后会到函数sys_sendrec */
 		ret = sendrec(SEND, src_dest, msg);
 		if (ret == 0)
 			ret = sendrec(RECEIVE, src_dest, msg);
@@ -258,7 +260,7 @@ PRIVATE int deadlock(int src, int dest)
 					assert(p->p_msg);
 					p = proc_table + p->p_sendto;
 					printl("->%s", p->name);
-				} while (p != proc_table + src);
+				} while (p != proc_table + src);// 循环遍历所有的进程名字，直到进程为源进程
 				printl("=_=");
 
 				return 1;
@@ -303,15 +305,16 @@ PRIVATE int msg_send(struct proc* current, int dest, MESSAGE* m)
 	     p_dest->p_recvfrom == ANY)) {
 		assert(p_dest->p_msg);
 		assert(m);
-
+		/* 这一步很重要，这一步就实现了消息体的拷贝 */
 		phys_copy(va2la(dest, p_dest->p_msg),
 			  va2la(proc2pid(sender), m),
 			  sizeof(MESSAGE));
 		p_dest->p_msg = 0;
 		p_dest->p_flags &= ~RECEIVING; /* dest has received the msg */
 		p_dest->p_recvfrom = NO_TASK;
+		/* 解除锁定，这样当时钟中断发生，这个进程可以被调度运行 */
 		unblock(p_dest);
-
+		/* 以下的都是一些检查错误的手段 */
 		assert(p_dest->p_flags == 0);
 		assert(p_dest->p_msg == 0);
 		assert(p_dest->p_recvfrom == NO_TASK);
@@ -339,7 +342,7 @@ PRIVATE int msg_send(struct proc* current, int dest, MESSAGE* m)
 			p_dest->q_sending = sender;
 		}
 		sender->next_sending = 0;
-
+		/* 注意这里很容易就发生死锁，A->B,B->C,C->A发送消息，那么由于B,C,A都没准备好接受消息，那么就会进入这里，然后进行锁定，也就是得不到调度，最终三个都得不到调度那么就死锁了 */
 		block(sender);
 
 		assert(sender->p_flags == SENDING);
@@ -503,10 +506,13 @@ PRIVATE int msg_receive(struct proc* current, int src, MESSAGE* m)
 		/* Set p_flags so that p_who_wanna_recv will not
 		 * be scheduled until it is unblocked.
 		 */
+		/* 让task_sys的p_flags处于接受状态 */
 		p_who_wanna_recv->p_flags |= RECEIVING;
-
+		/* 让这个进程也有一个消息体，用于后面的消息拷贝 */
 		p_who_wanna_recv->p_msg = m;
+		/* 记录接受的消息来自于哪里 */
 		p_who_wanna_recv->p_recvfrom = src;
+		/* 进行阻塞，也就是更换proc_ready,当时钟中断发生就会切换进程运行 */
 		block(p_who_wanna_recv);
 
 		assert(p_who_wanna_recv->p_flags == RECEIVING);

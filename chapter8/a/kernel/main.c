@@ -130,7 +130,9 @@ PUBLIC int kernel_main()
 PUBLIC int get_ticks()
 {
 	MESSAGE msg;
+	/* msg这个结构体成员全都初始化为0，也就是清除消息 */
 	reset_msg(&msg);
+	/* 也就是=2 */
 	msg.type = GET_TICKS;
 	send_recv(BOTH, TASK_SYS, &msg);
 	return msg.RETVAL;
